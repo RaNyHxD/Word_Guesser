@@ -1,45 +1,47 @@
 /**
  * 
  * Word Guesser - The Word Guesser main script for code.org.
- * 
- * @project https://studio.code.org/projects/applab/3629dcf0-e1de-4539-8ec5-e5b152c5eab0
+ *
  * @author Joshua Marchuk <Marchuk1josh@gmail.com>
- * @version 1.1.1
+ * @version 1.2.6
  * @license MIT
  * 
  */
-
 //variables
+var tempwords = getColumn("Words", "Word");
 var words = [];
 var answer;
 var row = 1;
 var correct = 0;
 var win = 0;
-var tempwords = getColumn("Words", "Word");
 
 //Traversel
 
 for(var i=0;i<tempwords.length;i++) {
   if(tempwords[i].length==6) {
     appendItem(words, tempwords[i]);
-    console.log(tempwords[i]);
   }
 }
 
 //functions
 
 function start() {
+  
+  setProperty("guessInput","hidden",false);
+  setProperty("guessButton","hidden",false);
+  setProperty("continue","hidden",true);
+  
   row = 1;
-  answer = words[randomNumber(0,words.length-1)];
-  console.log(answer);
-  setScreen("screen2");
   for(var i=0;i<6;i++) {
     for(var l=0;l<6;l++) {
-      setText("r"+row+"l"+(l+1),"");
-      setProperty("r"+row+"l"+(l+1),"background-color",rgb(241, 226, 212));
+      setText("r"+(i+1)+"l"+(l+1),"");
+      setProperty("r"+(i+1)+"l"+(l+1),"background-color",rgb(241, 226, 212));
     }
-    row++;
   }
+  win = 0;
+  correct = 0;
+  answer = words[randomNumber(0,words.length-1)];
+  setScreen("screen2");
 }
 
 function guess() {
@@ -55,23 +57,20 @@ function guess() {
       setText("r"+row+"l"+(i+1), input.substring(i,i+1));
       setProperty("r"+row+"l"+(i+1), "background-color", rgb(241, 226, 212));
     }
-    row++;
+    
   }
-  if(row==6) {
+  if(correct<6) {
     win = -1;
-    row = 0;
-  } else if(correct==6) {
+  } else if(correct>=6) {
     win = 1;
-    row = 0;
   }
-  
+  row++;
 }
 
 //onEvents
 
 onEvent("startButton", "click", function( ) {
   start();
-  row = 0;
 });
 
 onEvent("continue", "click", function( ) {
@@ -85,11 +84,13 @@ onEvent("continue", "click", function( ) {
 });
 
 onEvent("guessButton", "click", function( ) {
-  guess();
-  if(row>7||win!==0) {
-    setProperty("guessInput","hidden",true);
-    setProperty("guessButton","hidden",true);
-    setProperty("continue","hidden",false);
+  if(getText("guessInput").length==6) {
+    guess();
+    if(row>7||win!==0) {
+      setProperty("guessInput","hidden",true);
+      setProperty("guessButton","hidden",true);
+      setProperty("continue","hidden",false);
+    }
   }
 });
 
