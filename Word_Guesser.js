@@ -8,6 +8,7 @@
  * @license MIT
  * 
  */
+
 //variables
 var words = [];
 var answer;
