@@ -3,7 +3,7 @@
  * Word Guesser - The Word Guesser main script for code.org.
  *
  * @author Joshua Marchuk <Marchuk1josh@gmail.com>
- * @version 1.2.6
+ * @version 1.2.8
  * @license MIT
  * 
  */
@@ -20,6 +20,7 @@ var win = 0;
 for(var i=0;i<tempwords.length;i++) {
   if(tempwords[i].length==6) {
     appendItem(words, tempwords[i]);
+    // I had to do this in this way cuz i have to Traverse a dataset.
   }
 }
 
@@ -59,12 +60,17 @@ function guess() {
     }
     
   }
-  if(correct<6) {
-    win = -1;
+  if(row==6) {
+    if(correct<6) {
+      win = -1;
+    } else if(correct>=6) {
+      win = 1;
+    }
   } else if(correct>=6) {
     win = 1;
+  } else {
+    row++;
   }
-  row++;
 }
 
 //onEvents
