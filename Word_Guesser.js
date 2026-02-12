@@ -4,7 +4,7 @@
  * 
  * @project https://studio.code.org/projects/applab/3629dcf0-e1de-4539-8ec5-e5b152c5eab0
  * @author Joshua Marchuk <Marchuk1josh@gmail.com>
- * @version 1.1.0
+ * @version 1.1.1
  * @license MIT
  * 
  */
@@ -29,14 +29,14 @@ for(var i=0;i<tempwords.length;i++) {
 //functions
 
 function start() {
-  row = 0;
+  row = 1;
   answer = words[randomNumber(0,words.length-1)];
   console.log(answer);
   setScreen("screen2");
   for(var i=0;i<6;i++) {
     for(var l=0;l<6;l++) {
-      setText("r"+row+"l"+l,"");
-      setProperty("r"+row+"l"+l,"background-color",rgb(241, 226, 212));
+      setText("r"+row+"l"+(l+1),"");
+      setProperty("r"+row+"l"+(l+1),"background-color",rgb(241, 226, 212));
     }
     row++;
   }
@@ -55,20 +55,23 @@ function guess() {
       setText("r"+row+"l"+(i+1), input.substring(i,i+1));
       setProperty("r"+row+"l"+(i+1), "background-color", rgb(241, 226, 212));
     }
-    
+    row++;
   }
   if(row==6) {
     win = -1;
+    row = 0;
   } else if(correct==6) {
     win = 1;
+    row = 0;
   }
-  row++;
+  
 }
 
 //onEvents
 
 onEvent("startButton", "click", function( ) {
   start();
+  row = 0;
 });
 
 onEvent("continue", "click", function( ) {
